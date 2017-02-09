@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/image_user1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.saad.jspart3.user_profile_activity"
+    tools:showIn="@layout/activity_user_profile">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/datat"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:id="@+id/text_user1"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name: "
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/text_user1_email"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email ID: "
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/text_user1_signup_as"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Signup As: "
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/text_user1_gender"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gender: "
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/text_user1_dOb"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date Of Birth: "
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/text_user1_country"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Country: "
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/text_user1_city"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="City: "
+            android:textSize="20dp"/>
+        <Button
+            android:id="@+id/search_job_btn"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search Jobs"/>
+        <Button
+            android:id="@+id/post_job_btn"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Post A Job"/>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/lissView"
+            android:layout_below="@id/datat"
+            android:layout_width="match_parent"
+            android:layout_height="500dp">
+
+        </ListView>
+
+</LinearLayout>
+    </LinearLayout>
+
+
+
+
+
+
+</RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>
+
