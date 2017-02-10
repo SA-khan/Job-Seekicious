@@ -1,9 +1,16 @@
 package com.example.saad.jspart3;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +32,16 @@ public class employer_employee_relation extends AppCompatActivity {
 
     TextView eeEmployeeName;
     ImageView eeEmployeeDP;
+    TextView eeEmployeeAccount;
+    TextView eeEmployeeEmail;
+    TextView eeEmployeeDOB;
+    TextView eeEmployeeGender;
+    TextView eeEmployeeCity;
+    TextView eeEmployeeCountry;
+
+    Button eeEmployeeSkype;
+    Button eeEmployeeMessage;
+    Button eeEmployeeCV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +53,15 @@ public class employer_employee_relation extends AppCompatActivity {
         eeEmployerDP = (ImageView)findViewById(R.id.eeEmployerDP);
         eeEmployeeName = (TextView)findViewById(R.id.eeEmployeeName);
         eeEmployeeDP = (ImageView)findViewById(R.id.eeEmployeeDP);
+            eeEmployeeAccount = (TextView) findViewById(R.id.eeEmployeeAccount);
+            eeEmployeeEmail = (TextView) findViewById(R.id.eeEmployeeEmail);
+            eeEmployeeDOB = (TextView) findViewById(R.id.eeEmployeeDOB);
+            eeEmployeeGender = (TextView) findViewById(R.id.eeEmployeeGender);
+            eeEmployeeCity = (TextView) findViewById(R.id.eeEmployeeCity);
+            eeEmployeeCountry = (TextView) findViewById(R.id.eeEmployeeCountry);
+            eeEmployeeSkype = (Button)findViewById(R.id.eeEmployeeSkype);
+            eeEmployeeMessage = (Button)findViewById(R.id.eeEmployeeMessage);
+            eeEmployeeCV = (Button)findViewById(R.id.eeEmployeeCV);
 
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://js-part-3.firebaseio.com/SignUp_Database");
@@ -68,7 +94,22 @@ public class employer_employee_relation extends AppCompatActivity {
                     eeEmployeeName.setText(map.get("First_Name")+" "+map.get("Last_Name"));
                     Picasso.with(employer_employee_relation.this).load(map.get("Image_URL")).into(eeEmployeeDP);
                     eeEmployeeDP.setScaleType(ImageView.ScaleType.FIT_XY);
-
+                    if(map.get("Is_Employee").equals("true")) {
+                        eeEmployeeAccount.setText("Employee");
+                    }
+                    else {
+                        eeEmployeeAccount.setText("Employer");
+                    }
+                    eeEmployeeEmail.setText(map.get("Email_Address"));
+                    eeEmployeeDOB.setText(map.get("Date_of_Birth"));
+                    if(map.get("Is_Male").equals("true")) {
+                        eeEmployeeGender.setText("Male");
+                    }
+                    else{
+                        eeEmployeeGender.setText("Female");
+                    }
+                    eeEmployeeCity.setText(map.get("City"));
+                    eeEmployeeCountry.setText(map.get("Country"));
                 }
 
                 @Override
@@ -82,5 +123,72 @@ public class employer_employee_relation extends AppCompatActivity {
             Log.d("Exception: "," "+ex.getMessage());
         }
 
+        eeEmployeeSkype.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    initiateSkypeUri(employer_employee_relation.this,"assaykhan");
+            }
+        });
+        eeEmployeeMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        eeEmployeeCV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri webpage = Uri.parse("google.com");
+                Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            }
+        });
+
     }
-}
+    /**
+     * Initiate the actions encoded in the specified URI.
+     */
+    public void initiateSkypeUri(Context myContext, String mySkypeUri) {
+
+        // Make sure the Skype for Android client is installed.
+        if (!isSkypeClientInstalled(myContext)) {
+            goToMarket(myContext);
+            return;
+        }
+
+        // Create the Intent from our Skype URI.
+        Uri skypeUri = Uri.parse(mySkypeUri);
+        Intent myIntent = new Intent(Intent.ACTION_VIEW, skypeUri);
+
+        // Restrict the Intent to being handled by the Skype for Android client only.
+        myIntent.setComponent(new ComponentName("com.skype.raider", "com.skype.raider.Main"));
+        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // Initiate the Intent. It should never fail because you've already established the
+        // presence of its handler (although there is an extremely minute window where that
+        // handler can go away).
+        myContext.startActivity(myIntent);
+
+        return;
+    }
+
+    public boolean isSkypeClientInstalled(Context myContext) {
+        PackageManager myPackageMgr = myContext.getPackageManager();
+        try {
+            myPackageMgr.getPackageInfo("com.skype.raider", PackageManager.GET_ACTIVITIES);
+        } catch (PackageManager.NameNotFoundException e) {
+            return (false);
+        }
+        return (true);
+    }
+    public void goToMarket(Context myContext) {
+        Uri marketUri = Uri.parse("market://details?id=com.skype.raider");
+        Intent myIntent = new Intent(Intent.ACTION_VIEW, marketUri);
+        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        myContext.startActivity(myIntent);
+
+        return;
+    }
+ }

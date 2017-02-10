@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.saad.jspart3">
+    package="com.example.saad.jspart3" >
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -18,11 +18,12 @@
         android:allowBackup="true"
         android:icon="@drawable/logo1"
         android:label="Job Seekicious"
+        android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".Splash"
-            android:theme="@style/splashstyle">
+            android:theme="@style/splashstyle" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,7 +48,7 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".employees_list" />
         <activity android:name=".employer_job" />
-        <activity android:name=".employer_employee_relation"></activity>
+        <activity android:name=".employer_employee_relation" />
     </application>
 
 </manifest>
