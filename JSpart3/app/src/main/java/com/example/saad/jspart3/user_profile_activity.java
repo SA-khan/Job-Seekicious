@@ -53,6 +53,7 @@ public class user_profile_activity extends AppCompatActivity {
     String PICTURE;
     String Email_Address;
     int flag = 0;
+    String pictureURL;
 
     ImageView rootView;
     TextView userName;
@@ -64,6 +65,10 @@ public class user_profile_activity extends AppCompatActivity {
     TextView city;
     Button searchJob;
     Button postJob;
+    TextView mypostedjob;
+    ImageView userMessage;
+    ImageView userResume;
+    ImageView userCareer;
     private ActionBar actionBar;
 
     @Override
@@ -71,6 +76,7 @@ public class user_profile_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final CollapsingToolbarLayout tb = (CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
         setSupportActionBar(toolbar);
 
         rootView = (ImageView) findViewById(R.id.user_profile_dp);
@@ -83,6 +89,10 @@ public class user_profile_activity extends AppCompatActivity {
         city = (TextView)findViewById(R.id.text_user1_city);
         searchJob = (Button)findViewById(R.id.search_job_btn);
         postJob = (Button)findViewById(R.id.post_job_btn);
+        mypostedjob = (TextView)findViewById(R.id.mypostedjobs);
+        userMessage = (ImageView)findViewById(R.id.userMessage);
+        userResume = (ImageView)findViewById(R.id.userResume);
+        userCareer = (ImageView)findViewById(R.id.userCareer);
         lissView = (ListView)findViewById(R.id.lissView);
 
 
@@ -109,6 +119,7 @@ public class user_profile_activity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String value = dataSnapshot.getValue(String.class);
+                pictureURL = value;
                 String v = value.replace("\"","");
                 try {
                     //toolbar_layout.setBackground(Drawable.createFromStream(v));
@@ -122,22 +133,30 @@ public class user_profile_activity extends AppCompatActivity {
                 }
                 PICTURE = value;
                 Log.d("data_image",value);
-                rootView.bringToFront();
+                //rootView.bringToFront();
 
                 try {
                     URL muUrl = new URL(value);
                     HttpURLConnection con = (HttpURLConnection)muUrl.openConnection();
+                    con.setDoInput(true);
                     con.connect();
+
                     InputStream inputStream = con.getInputStream();
-                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                    Bitmap bbm = BitmapFactory.decodeStream(inputStream);
+                    toolbar.setBackgroundDrawable(Drawable.createFromStream(inputStream, null));
+                    tb.setBackgroundDrawable(Drawable.createFromStream(inputStream, null));
+                    tb.setBackgroundDrawable(Drawable.createFromPath(value));
+
+                    //toolbar.setBackground(Drawable.createFromStream(inputStream, "saad"));
+                    /*InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                     BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                     String completeData = null;
                     String tempData = "";
                     while ((tempData = bufferedReader.readLine())!= null){
                         completeData+=tempData;
                     }
-                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                    CollapsingToolbarLayout toolbar_layout = (CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);*/
+                    //CollapsingToolbarLayout toolbar_layout = (CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
                     //toolbar_layout.setBackground(Drawable.createFromPath(value));
                     //toolbar_layout.setBackgroundResource(R.drawable.anonymous);
                 }
@@ -210,6 +229,8 @@ public class user_profile_activity extends AppCompatActivity {
                 Log.d("Data1",value);
                 if(value.equals("true")){
                     postJob.setVisibility(View.GONE);
+                    mypostedjob.setVisibility(View.GONE);
+                    lissView.setVisibility(View.GONE);
                     signupAs.append("Employee");
                 }
                 else {
@@ -414,6 +435,62 @@ public class user_profile_activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myintent = new Intent(user_profile_activity.this,PostJob1.class);
                 myintent.putExtra("email",Email_Address);
+                startActivity(myintent);
+            }
+        });
+        rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent myintent = new Intent(user_profile_activity.this,DP_Activity.class);
+                myintent.putExtra("Image_URL", pictureURL);
+                startActivity(myintent);
+            }
+        });
+        userMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myintent = new Intent(user_profile_activity.this,userMessages.class);
+                myintent.putExtra("Image_URL", pictureURL);
+                myintent.putExtra("Email_Address", Email_Address);
+                startActivity(myintent);
+            }
+        });
+        userResume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Firebase cv = ref.child("CV_URL");
+                cv.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String value = dataSnapshot.getValue(String.class);
+                        if(value == null){
+                            fab.setVisibility(View.GONE);
+                        }
+                        else {
+                            Uri webpage = Uri.parse(value);
+                            Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                            if (intent.resolveActivity(getPackageManager()) != null) {
+                                startActivity(intent);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
+            }
+        });
+        userCareer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myintent = new Intent(user_profile_activity.this,userCareer.class);
+                myintent.putExtra("Image_URL", pictureURL);
+                myintent.putExtra("Email_Address", Email_Address);
+                //myintent.putExtra("Image_URL", pictureURL);
                 startActivity(myintent);
             }
         });

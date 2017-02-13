@@ -90,6 +90,7 @@ public class employees_list extends AppCompatActivity {
                 Intent myIntent = new Intent(employees_list.this, employer_employee_relation.class);
                 myIntent.putExtra("data" , data);
                 myIntent.putExtra("employer_key" , email_employer);
+                myIntent.putExtra("jobkey",job1[1]);
                 startActivity(myIntent);
             }
         });

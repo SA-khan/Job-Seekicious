@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,16 +21,21 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
 import java.util.Map;
 
 public class employer_employee_relation extends AppCompatActivity {
 
     Intent myintent;
     Firebase ref;
+    Firebase EmployeeId;
 
+    String employeer_key_data;
+    String employer_Jobkey;
     TextView eeEmployerName;
     ImageView eeEmployerDP;
 
+    String employee_Email;
     TextView eeEmployeeName;
     ImageView eeEmployeeDP;
     TextView eeEmployeeAccount;
@@ -68,7 +74,9 @@ public class employer_employee_relation extends AppCompatActivity {
         myintent = getIntent();
 
         String employees_list_data = myintent.getStringExtra("data");
-        String employeer_key_data = myintent.getStringExtra("employer_key");
+        employeer_key_data = myintent.getStringExtra("employer_key");
+        employer_Jobkey    = myintent.getStringExtra("jobkey");
+
         Firebase employerId = ref.child(employeer_key_data);
         employerId.addValueEventListener(new ValueEventListener() {
             @Override
@@ -86,7 +94,7 @@ public class employer_employee_relation extends AppCompatActivity {
             }
         });
             Log.d("employee-->>"," "+employees_list_data);
-            Firebase EmployeeId = ref.child(employees_list_data.replace("()","/"));
+            EmployeeId = ref.child(employees_list_data.replace("()","/"));
             EmployeeId.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -100,7 +108,8 @@ public class employer_employee_relation extends AppCompatActivity {
                     else {
                         eeEmployeeAccount.setText("Employer");
                     }
-                    eeEmployeeEmail.setText(map.get("Email_Address"));
+                    employee_Email = map.get("Email_Address");
+                    eeEmployeeEmail.setText(employee_Email);
                     eeEmployeeDOB.setText(map.get("Date_of_Birth"));
                     if(map.get("Is_Male").equals("true")) {
                         eeEmployeeGender.setText("Male");
@@ -132,6 +141,25 @@ public class employer_employee_relation extends AppCompatActivity {
         eeEmployeeMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                    //Firebase jobkey = ref.child(employeer_key_data+"/"+employer_Jobkey+"/");
+
+                    Firebase messageKey = EmployeeId.child("Messages/"+employer_Jobkey);
+                    String generatedKey = messageKey.push().getKey();
+                    Firebase employerKey = messageKey.child(employeer_key_data);
+                    Firebase employeeMessagekey = employerKey.child(generatedKey);
+                    Firebase source = employeeMessagekey.child("Source");
+                    source.setValue(employeer_key_data);
+                    Firebase destination = employeeMessagekey.child("Destination");
+                    destination.setValue(employee_Email);
+                    Firebase message = employeeMessagekey.child("Message");
+                    message.setValue("The message");
+                    Time now = new Time();
+                    now.setToNow();
+                    Firebase date = employeeMessagekey.child("Posted_Date");
+                    date.setValue(now);
+
+
 
             }
         });

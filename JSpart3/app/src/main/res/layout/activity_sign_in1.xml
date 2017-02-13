@@ -25,6 +25,7 @@
     </LinearLayout>
 
         <ImageView
+            android:id="@+id/loginDP"
             android:layout_width="200dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
@@ -64,13 +65,15 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="40dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginRight="5dp"
                     android:src="@drawable/anonymous"/>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
+                    android:layout_marginRight="20dp"
                     android:layout_height="wrap_content">
 
                     <AutoCompleteTextView
@@ -93,13 +96,16 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="5dp"
                     android:src="@drawable/password"/>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
+                    android:layout_marginRight="20dp"
                     android:layout_height="wrap_content">
 
                     <EditText
@@ -128,22 +134,65 @@
 
         </LinearLayout>
     </ScrollView>
+    <LinearLayout
+        android:layout_marginLeft="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remember Me "
+            android:gravity="center"
+            android:textSize="15sp"/>
+        <SeekBar
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="right"
+            android:isScrollContainer="true"
+            android:scrollbarStyle="outsideOverlay"/>
+    </LinearLayout>
     <Button
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:id="@+id/email_sign_in_button"
         style="?android:textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="24dp"
-        android:text="Sign_In"
+        android:background="@drawable/login_btn"
+        android:layout_marginTop="5dp"
         android:textStyle="bold" />
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="Or"
-        android:gravity="center"
-        android:textSize="24sp"/>
+        android:orientation="horizontal"
+        android:layout_weight="1">
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Having trouble "
+            android:gravity="center"
+            android:textSize="15sp"/>
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Signing In?"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textSize="15sp"/>
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -153,7 +202,9 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="#4285F4"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/common_plus_signin_btn_text_dark_normal"
             android:layout_weight="1"
             android:text="Sign In with Google"
             android:textColor="#ffffff"
@@ -167,6 +218,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
+        android:layout_marginRight="23dp"
+        android:layout_marginLeft="23dp"
+
+        android:layout_marginBottom="40dp"
         android:text="Sign in with LinkedIN"
         android:textColor="#ffffff"
         android:background="#0077B5"

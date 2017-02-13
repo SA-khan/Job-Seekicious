@@ -24,6 +24,13 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+            <ImageView
+                android:id="@+id/user_profile_dp"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_bar_height"
+                />
+
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -52,7 +59,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_margin="@dimen/fab_margin"
-        android:background="@drawable/menu_dots"
+        android:background="@drawable/left"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="top|start" />
     <Button
@@ -63,12 +70,6 @@
         android:background="@drawable/menu_dots"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="top|end" />
-    <ImageView
-        android:id="@+id/user_profile_dp"
-        android:scaleType="centerCrop"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
-        android:src="@drawable/user_anonymous"
-        />
+
 
 </android.support.design.widget.CoordinatorLayout>
