@@ -3,7 +3,9 @@ package com.example.saad.jspart3;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -27,7 +29,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +80,7 @@ public class SignIn1 extends AppCompatActivity implements LoaderCallbacks<Cursor
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private CheckBox rememberMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +89,34 @@ public class SignIn1 extends AppCompatActivity implements LoaderCallbacks<Cursor
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://js-part-3.firebaseio.com/SignUp_Database");
         firebaseAuth = FirebaseAuth.getInstance();
+        //Shared Preference Switch
+
+        rememberMe = (CheckBox)findViewById(R.id.myswitch);
+        rememberMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    SharedPreferences sharedPreferences = SignIn1.this.getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    if (!(TextUtils.isEmpty(mEmailView.getText().toString()) && TextUtils.isEmpty(mPasswordView.getText().toString()))) {
+                        editor.putString("SignIn_Email", mEmailView.getText().toString());
+                        editor.putString("SignIn_Password", mPasswordView.getText().toString());
+                        editor.commit();
+                    }
+                }
+                else {
+                    SharedPreferences sharedPreferences = SignIn1.this.getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    if(!(TextUtils.isEmpty(mEmailView.getText().toString()) && TextUtils.isEmpty(mPasswordView.getText().toString())) ) {
+                        editor.putString("SignIn_Email", null);
+                        editor.putString("SignIn_Password", null);
+                        editor.commit();
+                    }
+                }
+            }
+        });
+
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -106,6 +140,21 @@ public class SignIn1 extends AppCompatActivity implements LoaderCallbacks<Cursor
                 attemptLogin();
             }
         });
+
+        SharedPreferences sharedPreferences = SignIn1.this.getPreferences(Context.MODE_PRIVATE);
+        String shared_email = sharedPreferences.getString("SignIn_Email", null);
+        String shared_password = sharedPreferences.getString("SignIn_Password", null);
+
+        if(shared_email != null && shared_password != null){
+            try {
+                mEmailView.setText(shared_email);
+                mPasswordView.setText(shared_password);
+                rememberMe.setChecked(true);
+            }
+            catch (Exception ex){
+
+            }
+        }
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
