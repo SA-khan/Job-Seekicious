@@ -51,7 +51,8 @@
         <activity android:name=".employer_employee_relation" />
         <activity android:name=".DP_Activity" />
         <activity android:name=".userMessages" />
-        <activity android:name=".userCareer"></activity>
+        <activity android:name=".userCareer" />
+        <activity android:name=".ChatActivity"></activity>
     </application>
 
 </manifest>

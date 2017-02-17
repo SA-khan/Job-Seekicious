@@ -144,7 +144,7 @@ public class employer_employee_relation extends AppCompatActivity {
 
                     //Firebase jobkey = ref.child(employeer_key_data+"/"+employer_Jobkey+"/");
 
-                    Firebase messageKey = EmployeeId.child("Messages/"+employer_Jobkey);
+                   /* Firebase messageKey = EmployeeId.child("Messages/"+employer_Jobkey);
                     String generatedKey = messageKey.push().getKey();
                     Firebase employerKey = messageKey.child(employeer_key_data);
                     Firebase employeeMessagekey = employerKey.child(generatedKey);
@@ -157,7 +157,20 @@ public class employer_employee_relation extends AppCompatActivity {
                     Time now = new Time();
                     now.setToNow();
                     Firebase date = employeeMessagekey.child("Posted_Date");
-                    date.setValue(now);
+                    date.setValue(now);*/
+                Firebase messageKey = EmployeeId.child("Messages");
+                String generatedKey = messageKey.push().getKey();
+                Firebase RandomKey = messageKey.child(generatedKey);
+                Firebase source = RandomKey.child("Source");
+                source.setValue(employeer_key_data);
+                Firebase destination = RandomKey.child("Destination");
+                destination.setValue(employee_Email);
+                Firebase message = RandomKey.child("Message");
+                message.setValue("The message");
+                Time now = new Time();
+                now.setToNow();
+                Firebase date = RandomKey.child("Posted_Date");
+                date.setValue(now);
 
 
 
