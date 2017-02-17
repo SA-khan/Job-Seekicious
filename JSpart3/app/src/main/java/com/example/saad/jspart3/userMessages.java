@@ -20,7 +20,9 @@ public class userMessages extends AppCompatActivity {
 
     Firebase ref;
     ArrayList<MessageWord> list = new ArrayList<MessageWord>();
-
+    String sender_data;
+    String key_data;
+    String reciever_data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class userMessages extends AppCompatActivity {
 
         String remSpace = email.replace("%40","");
         String dataEmail = remSpace.replace(".","/");
+        reciever_data = dataEmail;
 
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://js-part-3.firebaseio.com/SignUp_Database/"+dataEmail+"/");
@@ -46,23 +49,47 @@ public class userMessages extends AppCompatActivity {
                 for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
 
                     final String clubkey = childSnapshot.getKey();
+                    key_data = clubkey;
                     Log.d("Message--->>>"," "+clubkey);
-                    Firebase Message_Ref = message.child(clubkey);
+                    final Firebase Message_Ref = message.child(clubkey);
                     Message_Ref.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Map<String, String> map = dataSnapshot.getValue(Map.class);
                             String sender = map.get("Source");
+                            sender_data = sender;
                             Firebase SenderRef = new Firebase("https://js-part-3.firebaseio.com/SignUp_Database/"+sender+"/");
                             SenderRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     Map<String,String> map = dataSnapshot.getValue(Map.class);
-                                    String fname = map.get("First_Name");
-                                    String lname = map.get("Last_Name");
-                                    list.add(new MessageWord(fname+" "+lname,""));
+                                    final String fname = map.get("First_Name");
+                                    final String lname = map.get("Last_Name");
 
-                                    adapter.notifyDataSetChanged();
+
+                                    Firebase date = Message_Ref.child("Posted_Date");
+                                    date.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            Map<String, String> map = dataSnapshot.getValue(Map.class);
+                                            String date = String.valueOf(map.get("monthDay"));
+                                            String month = String.valueOf(map.get("month"));
+                                            String year = String.valueOf(map.get("year"));
+                                            Log.d("date-->>", " "+date);
+                                            Log.d("month-->>", " "+month);
+                                            Log.d("yeare-->>", " "+year);
+
+                                            list.add(new MessageWord(fname+" "+lname,date+"-"+month+"-"+year));
+
+                                            adapter.notifyDataSetChanged();
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(FirebaseError firebaseError) {
+
+                                        }
+                                    });
                                 }
 
                                 @Override
@@ -96,7 +123,11 @@ public class userMessages extends AppCompatActivity {
         rootView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+              Intent myintent = new Intent(getApplicationContext(),ChatActivity.class);
+                myintent.putExtra("Sender", sender_data);
+                myintent.putExtra("Key", key_data);
+                myintent.putExtra("Reciever", reciever_data);
+                startActivity(myintent);
             }
         });
     }
